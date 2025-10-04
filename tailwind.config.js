@@ -7,7 +7,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Noto Sans"', 'Roboto', 'ui-sans-serif', 'system-ui'],
+        adlam: ['"ADLaM Display"', "sans-serif"],
+        sans: ['"Noto Sans"', "Roboto", "ui-sans-serif", "system-ui"],
       },
     },
   },
