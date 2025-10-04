@@ -8,6 +8,7 @@ const Main = lazy(() => import("../page/main/Main"));
 
 // 로그인
 const LoginIndex = lazy(() => import("../page/login/Index"));
+const SignUpPage = lazy(() => import("../page/login/SignUp"));
 
 const router = createBrowserRouter([
   {
@@ -20,16 +21,23 @@ const router = createBrowserRouter([
             <Main />
           </Suspense>
         ),
-        children: [
-          {
-            path: "/login",
-            element: (
-              <Suspense fallback={<Loading />}>
-                <LoginIndex />
-              </Suspense>
-            ),
-          },
-        ],
+      },
+      // 로그인
+      {
+        path: "login",
+        element: (
+          <Suspense fallback={<Loading />}>
+            <LoginIndex />
+          </Suspense>
+        ),
+      },
+      {
+        path: "sign_up",
+        element: (
+          <Suspense fallback={<Loading />}>
+            <SignUpPage />
+          </Suspense>
+        ),
       },
       {
         path: "*",
