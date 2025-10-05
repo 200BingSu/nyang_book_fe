@@ -1,6 +1,7 @@
 import axios from "axios";
 import { baseUrl } from "../../constants/url";
 import type { User } from "./UserVO";
+import { createClient } from "@supabase/supabase-js";
 
 // 회원가입
 export const postSignUp = async (user: User) => {
@@ -23,3 +24,8 @@ export const postSignUp = async (user: User) => {
     console.log(error);
   }
 };
+
+// supabase 회원가입
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);

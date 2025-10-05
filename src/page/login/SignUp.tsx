@@ -1,14 +1,15 @@
 import { Button, Form, Input } from "antd";
-import { postSignUp } from "./loginApi";
+import { postSignUp, supabase } from "./loginApi";
 
 const SignUp = () => {
   const onFinish = async (values: any) => {
-    const result = await postSignUp(values);
-    const dataMap = result.dataMap;
-    if (result.message === "OK") {
-      alert("회원가입 성공!!!!");
+    const { email, password } = values;
+    const { data, error } = await supabase.auth.signUp({ email, password });
+    if (error) {
+      alert(`❌ 오류: ${error.message}`);
+    } else {
+      alert("✅ 회원가입 성공! 이메일 인증을 완료해주세요.");
     }
-    console.log("result", result);
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -28,9 +29,18 @@ const SignUp = () => {
         size="large"
       >
         <Form.Item
-          label="ID"
-          name="user_id"
-          rules={[{ required: true, message: "아이디를 입력해주세요" }]}
+          name="email"
+          label="이메일"
+          rules={[
+            {
+              type: "email",
+              message: "이메일 양식에 맞게 작성해주세요",
+            },
+            {
+              required: true,
+              message: "이메일을 입력해주세요",
+            },
+          ]}
         >
           <Input />
         </Form.Item>
@@ -39,6 +49,30 @@ const SignUp = () => {
           label="PW"
           name="password"
           rules={[{ required: true, message: "비밀번호를 입력해주세요" }]}
+        >
+          <Input.Password />
+        </Form.Item>
+        <Form.Item
+          name="confirm"
+          label="비밀번호 확인"
+          dependencies={["password"]}
+          hasFeedback
+          rules={[
+            {
+              required: true,
+              message: "비밀번호 확인을 입력해주세요",
+            },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue("password") === value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(
+                  new Error("비밀번호와 일치하지 않습니다"),
+                );
+              },
+            }),
+          ]}
         >
           <Input.Password />
         </Form.Item>

@@ -1,16 +1,41 @@
 import { Button, Checkbox, Form, Input, Space } from "antd";
 import { PiPawPrintFill } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "./loginApi";
+import { setCookie } from "../../util/cookie/helpCookies";
 
 const Index = () => {
   const navigate = useNavigate();
 
-  const onFinish = (values: any) => {
-    console.log("Success:", values);
+  const onFinish = async (values: any) => {
+    const { email, password, remember } = values;
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    console.log("data", data);
+
+    if (error) {
+      alert("로그인 오류");
+    } else {
+      if (!remember) {
+        // 임시 세션: 세션을 sessionStorage에만 저장
+        sessionStorage.setItem(
+          "supabase-session",
+          JSON.stringify(data.session),
+        );
+        // localStorage에서 기존 세션 삭제
+        localStorage.removeItem("supabase.auth.token");
+      }
+      alert("로그인 성공");
+
+      navigate("/");
+    }
   };
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
   };
+
   return (
     <div
       className="bg-white border border-stone-200 
@@ -46,15 +71,15 @@ const Index = () => {
         size="large"
       >
         <Form.Item
-          label="ID"
-          name="id"
+          label="이메일"
+          name="email"
           rules={[{ required: true, message: "아이디를 입력해주세요" }]}
         >
           <Input />
         </Form.Item>
 
         <Form.Item
-          label="PW"
+          label="비밀번호"
           name="password"
           rules={[{ required: true, message: "비밀번호를 입력해주세요" }]}
         >
