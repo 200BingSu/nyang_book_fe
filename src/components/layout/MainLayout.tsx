@@ -3,6 +3,7 @@ import SideBar from "./menu/SideBar";
 import AuthListener from "../../page/login/AuthListener";
 import { useEffect, useState } from "react";
 import { supabase } from "../../page/login/loginApi";
+import { selectAllServiceWithUserType } from "../../api/serviceApi";
 
 const MainLayout = () => {
   const location = useLocation();
@@ -12,6 +13,16 @@ const MainLayout = () => {
   const displayNoneSideBar = ["/login", "/sign_up"];
 
   const [user, setUser] = useState<any>(null);
+
+  // 로그아웃 처리
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) alert("로그아웃 실패: " + error.message);
+  };
+
+  useEffect(() => {
+    // selectAllServiceWithUserType();
+  }, []);
 
   // 로그인 상태 감지 + 세션 복원
   useEffect(() => {
@@ -25,7 +36,7 @@ const MainLayout = () => {
 
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (event, session) => {
-        console.log("Auth event:", event);
+        // console.log("Auth event:", event);
         if (event === "SIGNED_OUT") {
           setUser(null);
           navigate("/login");
@@ -41,12 +52,6 @@ const MainLayout = () => {
       authListener.subscription.unsubscribe();
     };
   }, [navigate]);
-
-  // 로그아웃 처리
-  const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) alert("로그아웃 실패: " + error.message);
-  };
 
   return (
     <div className="bg-stone-100 w-full h-screen p-4 flex gap-4 justify-center items-center">
