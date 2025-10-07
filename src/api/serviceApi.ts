@@ -2,20 +2,21 @@ import axios from "axios";
 import { baseUrl } from "../constants/url";
 import type { AppDispatch } from "../store/store";
 
-export const selectAllServiceWithUserType = async (
-  user_type: string,
-  dispatch: AppDispatch,
-) => {
+const mapping = "service";
+
+export const selectAllServiceWithUserType = async (user_type: string) => {
   const payload = {
     user_type: user_type,
   };
   try {
     const res = await axios.post(
-      `${baseUrl}/selectAllServiceWithUserType`,
+      `${baseUrl}/${mapping}/selectAllServiceWithUserType`,
       payload,
     );
-    console.log("res", res);
-
+    const data = res.data;
+    if (res.status === 200 && data.message === "OK") {
+      return data.dataList;
+    }
     return res;
   } catch (error) {
     console.error(`selectAllServiceWithUserType`, error);

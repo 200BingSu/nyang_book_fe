@@ -1,6 +1,6 @@
 import axios from "axios";
 import { baseUrl } from "../../constants/url";
-import type { User } from "./UserVO";
+import type { User } from "../../types/UserVO";
 import { createClient } from "@supabase/supabase-js";
 
 // 회원가입

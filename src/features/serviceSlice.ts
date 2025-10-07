@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
+import type { ServiceVO } from "../types/ServiceVO";
 
 // 초기값(상태 관리할 데이터)
-const initialState = { serviceList: [], currentService: "" };
+const initialState = { serviceList: [] as ServiceVO[], currentService: "" };
 // 코딩 컨벤션
 // Slice는 sotre을 쪼개서 사용한다는 의미
 const serviceSlice = createSlice({
