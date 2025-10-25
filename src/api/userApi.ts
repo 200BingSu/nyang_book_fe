@@ -3,8 +3,8 @@ import { baseUrl } from "../constants/url";
 
 const mapping = "user";
 
-export const selectUserInfo = async (user_key: string) => {
-  const payload = { user_key };
+export const selectUserInfo = async (id: string) => {
+  const payload = { id };
   try {
     const res = await axios.post(
       `${baseUrl}/${mapping}/selectUserAndPet`,

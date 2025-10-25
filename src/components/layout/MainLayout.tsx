@@ -3,6 +3,7 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import AuthListener from "../../page/login/AuthListener";
 import { supabase } from "../../page/login/loginApi";
 import SideBar from "./menu/SideBar";
+import SearchAndUser from "./SearchAndUser/SearchAndUser";
 
 const MainLayout = () => {
   // navigate
@@ -10,7 +11,7 @@ const MainLayout = () => {
   const navigate = useNavigate();
   const path = location.pathname;
 
-  const displayNoneSideBar = ["/login", "/sign_up"];
+  const displayNoneContent = ["/login", "/sign_up"];
 
   // 로그인 상태 감지 + 세션 복원
   useEffect(() => {
@@ -37,12 +38,15 @@ const MainLayout = () => {
   }, [navigate]);
 
   return (
-    <div className="bg-stone-100 w-full min-h-screen p-4 flex gap-4 justify-center items-center">
+    <div className="bg-stone-50 w-full h-screen p-4 flex gap-4 justify-center items-center">
       <AuthListener />
-      {!displayNoneSideBar.find(item => item === path) && <SideBar />}
-      <div className="flex-1">
-        <Outlet />
-      </div>
+      {!displayNoneContent.find(item => item === path) && <SideBar />}
+      <section className="flex-1 flex flex-col h-full gap-4">
+        {!displayNoneContent.find(item => item === path) && <SearchAndUser />}
+        <main className="flex-1 h-full">
+          <Outlet />
+        </main>
+      </section>
     </div>
   );
 };

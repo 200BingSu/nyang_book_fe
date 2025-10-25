@@ -10,6 +10,18 @@ const Main = lazy(() => import("../page/main/Main"));
 const LoginIndex = lazy(() => import("../page/login/Index"));
 const SignUpPage = lazy(() => import("../page/login/SignUp"));
 
+// 구매이력
+const PurchasesIndex = lazy(() => import("../page/purchases/Index"));
+
+// 통계
+const StaticsIndex = lazy(() => import("../page/statics/Index"));
+
+// 일기
+const DiaryIndex = lazy(() => import("../page/diary/Index"));
+
+// todo
+const TodoIndex = lazy(() => import("../page/todo/Index"));
+
 const router = createBrowserRouter([
   {
     element: <MainLayout />,
@@ -22,6 +34,7 @@ const router = createBrowserRouter([
           </Suspense>
         ),
       },
+
       // 로그인
       {
         path: "login",
@@ -39,6 +52,47 @@ const router = createBrowserRouter([
           </Suspense>
         ),
       },
+
+      // 구매이력
+      {
+        path: "purchases/*",
+        element: (
+          <Suspense fallback={<Loading />}>
+            <PurchasesIndex />
+          </Suspense>
+        ),
+      },
+
+      // 통계
+      {
+        path: "statics/*",
+        element: (
+          <Suspense fallback={<Loading />}>
+            <StaticsIndex />
+          </Suspense>
+        ),
+      },
+
+      // todo
+      {
+        path: "todo",
+        element: (
+          <Suspense fallback={<Loading />}>
+            <TodoIndex />
+          </Suspense>
+        ),
+      },
+
+      // diary
+      {
+        path: "diary",
+        element: (
+          <Suspense fallback={<Loading />}>
+            <DiaryIndex />
+          </Suspense>
+        ),
+      },
+
       {
         path: "*",
         element: <NotFound />,

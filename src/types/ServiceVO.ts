@@ -3,6 +3,8 @@ export interface ServiceVO {
   service_name: string;
   service_type: string;
   service_en: string;
+  index: number;
+  icon: string;
 
   childService: ServiceVO[];
   child_service_key: number;
