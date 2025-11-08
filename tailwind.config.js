@@ -10,6 +10,23 @@ export default {
         adlam: ['"ADLaM Display"', "sans-serif"],
         sans: ['"Noto Sans"', "Roboto", "ui-sans-serif", "system-ui"],
       },
+      boxShadow: {
+        // 이름: shadow-no-bottom
+        "md-no-bottom": [
+          // 위쪽
+          "0 -4px 6px -1px rgb(0 0 0 / 0.1)",
+          // 좌우 살짝
+          "-2px 0 4px -2px rgb(0 0 0 / 0.1)",
+          "2px 0 4px -2px rgb(0 0 0 / 0.1)",
+        ].join(", "),
+        "md-no-top": [
+          // 아래쪽
+          "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+          // 좌우 살짝
+          "-2px 0 4px -2px rgb(0 0 0 / 0.1)",
+          "2px 0 4px -2px rgb(0 0 0 / 0.1)",
+        ].join(", "),
+      },
     },
   },
   plugins: [],

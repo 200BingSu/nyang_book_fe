@@ -52,7 +52,7 @@ const SideBar = () => {
       "inline-block overflow-hidden whitespace-nowrap transition-transform duration-300";
     return isOpen
       ? `${base} max-w-max opacity-100 `
-      : `${base} max-w-0 opacity-0 `;
+      : `${base} max-w-0 opacity-0`;
   };
 
   return (
@@ -60,7 +60,8 @@ const SideBar = () => {
       className={`
         relative bg-white rounded-lg px-2 py-8 flex flex-col items-center gap-8 border border-stone-200
         transition-all  duration-300 ease-in-out
-        h-full overflow-y-auto
+        h-full overflow-y-auto 
+        ${isOpenSideBar ? "min-w-fit" : "w-[70px]"}
       `}
     >
       {/* 토글 버튼 */}
