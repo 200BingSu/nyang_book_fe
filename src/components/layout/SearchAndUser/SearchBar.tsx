@@ -95,7 +95,7 @@ const SearchBar = () => {
   }, [text]);
 
   return (
-    <div className="relative bg-red-200 ">
+    <div className="relative h-[50px]">
       {/* 검색 */}
       <div
         className={`absolute w-[505px] top-0 left-0 overflow-visible rounded-lg ${

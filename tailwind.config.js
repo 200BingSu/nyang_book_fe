@@ -29,5 +29,19 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      const newUtilities = {
+        ".no-drag": {
+          "-webkit-user-drag": "none",
+          "user-drag": "none",
+          "-webkit-user-select": "none",
+          "-moz-user-select": "none",
+          "-ms-user-select": "none",
+          "user-select": "none",
+        },
+      };
+      addUtilities(newUtilities, ["responsive"]);
+    },
+  ],
 };
