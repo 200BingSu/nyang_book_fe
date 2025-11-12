@@ -17,7 +17,7 @@ export const getSearchWithQuery = async (text: string) => {
     const res = await axios.get(
       `${baseUrl}/${mapping}/content?${payload.toString()}`,
     );
-    const data = res.data;
+    const data = await res.data;
     if (data.message === "OK") {
       return data;
     }
