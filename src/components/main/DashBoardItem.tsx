@@ -12,11 +12,12 @@ interface DashBoardItemProps extends PropsI {
   data: string;
   columnList?: columnI[];
   optionList?: optionI[];
+  detailColumnList?: columnI[];
+
   addBtn: boolean;
   onClickAddBtn: () => void;
   isSelectBox: boolean;
   openKeyRef: React.RefObject<string>;
-  onClickOption: () => void;
 }
 
 const DashBoardItem: React.FC<DashBoardItemProps> = ({
@@ -35,9 +36,7 @@ const DashBoardItem: React.FC<DashBoardItemProps> = ({
       option_sort: "ASC",
     },
   ],
-  onClickOption = (item: optionI) => {
-    console.log("click item:", item);
-  },
+  detailColumnList,
   children,
 }) => {
   // useRef
@@ -54,11 +53,13 @@ const DashBoardItem: React.FC<DashBoardItemProps> = ({
           data?: string;
           nowOption?: optionI;
           columnList: columnI[];
+          detailColumnList: columnI[];
         }>,
         {
           data,
           nowOption,
           columnList,
+          detailColumnList,
         },
       )
     : children;
@@ -120,7 +121,7 @@ const DashBoardItem: React.FC<DashBoardItemProps> = ({
                 onClick={handleOpenSelectBox}
                 className="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-stone-200"
               >
-                <p>{nowOption.option_name}</p>
+                <p className="text-sm">{nowOption.option_name}</p>
                 <div
                   className={`transition-all duration-200 ${
                     isOpenSelectBox ? "-rotate-180" : ""
@@ -144,7 +145,6 @@ const DashBoardItem: React.FC<DashBoardItemProps> = ({
                       <li
                         key={index}
                         onClick={() => {
-                          onClickOption(item);
                           handleClickOption(item);
                         }}
                         className="px-2 py-1 no-drag cursor-pointer hover:bg-stone-200 text-sm text-nowrap"

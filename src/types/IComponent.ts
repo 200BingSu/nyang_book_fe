@@ -8,6 +8,7 @@ export interface CustomTableI {
   data?: string;
   nowOption?: optionI;
   columnList?: columnI[];
+  detailColumnList?: columnI[];
 }
 
 export interface ModalI extends PropsI {

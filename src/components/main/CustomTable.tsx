@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { getSearchDataList } from "../../api/searchApi";
-import type { CustomTableI, PropsI } from "../../types/IComponent";
-import { useDebugState } from "../../util/useConsoleState";
 import type { DiaryVO } from "../../types/DiaryVO";
+import type { CustomTableI } from "../../types/IComponent";
+import type { columnI } from "../../types/SearchInterface";
 import BasicModal from "../layout/modal/BasicModal";
+import DetailContents from "./DetailContents";
 
-type DetailDataType = Partial<DiaryVO>;
+export type DetailDataType = Partial<DiaryVO>;
 
 const CustomTable: React.FC<CustomTableI> = ({
   data,
   nowOption,
   columnList,
+  detailColumnList,
 }) => {
   const [dataList, setDataList] = useState([]);
   const [selectedItem, setSelectedItem] = useState({});
@@ -28,6 +30,7 @@ const CustomTable: React.FC<CustomTableI> = ({
       setDataList(dataArr.dataMap.dataList);
     } else {
       setIsOpenDetail(true);
+      setDetailData(dataArr.dataMap.dataList[0]);
     }
   };
 
@@ -52,8 +55,10 @@ const CustomTable: React.FC<CustomTableI> = ({
 
     fetchDataList(value as number);
   }, [selectedItem]);
-
-  useDebugState("dataList", dataList);
+  useEffect(() => {
+    console.log("selectedItem", selectedItem);
+    console.log("isOpenDetail", isOpenDetail);
+  }, [detailData, isOpenDetail]);
   return (
     <div className="p-1">
       <div className=" pr-4">
@@ -130,7 +135,23 @@ const CustomTable: React.FC<CustomTableI> = ({
         </table>
       </div>
       {isOpenDetail && (
-        <BasicModal handleClose={() => setIsOpenDetail(false)} />
+        <BasicModal
+          handleClose={() => {
+            setIsOpenDetail(false);
+            setSelectedItem({});
+          }}
+          children={
+            <DetailContents
+              handleClose={() => {
+                setIsOpenDetail(false);
+                setSelectedItem({});
+              }}
+              data={data as string}
+              detailData={detailData}
+              detailColumnList={detailColumnList as columnI[]}
+            />
+          }
+        />
       )}
     </div>
   );

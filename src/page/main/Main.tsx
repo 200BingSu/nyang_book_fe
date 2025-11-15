@@ -1,10 +1,14 @@
 import { useRef } from "react";
-import DashBoardItem from "../../components/main/DashBoardItem";
-import DataList from "../../components/main/DataList";
 import CustomTable from "../../components/main/CustomTable";
+import DashBoardItem from "../../components/main/DashBoardItem";
+import type { DiaryVO } from "../../types/DiaryVO";
+import { COLUMN_TYPE } from "../../types/SearchInterface";
 
 const Main = () => {
   const openKeyRef = useRef("");
+  const updateDiary = async (payload: DiaryVO) => {
+    await updateDiary(payload);
+  };
   return (
     <div className="flex items-start gap-4 h-full ">
       <div className="flex-[1.5] flex flex-col gap-6 h-full">
@@ -45,7 +49,14 @@ const Main = () => {
                 column_width: 25,
               },
             ]}
-            onClickOption={() => {}}
+            detailColumnList={[
+              {
+                column_name: "내용",
+                column_value: "diary_content",
+                column_width: 65,
+                column_type: COLUMN_TYPE.TEXTAREA,
+              },
+            ]}
             children={<CustomTable />}
           />
         </div>

@@ -32,7 +32,7 @@ const BasicModal: React.FC<ModalI> = ({
             <CgClose />
           </button>
         </div>
-        <div>{children}</div>
+        {children}
       </div>
     </div>
   );
