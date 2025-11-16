@@ -11,6 +11,7 @@ export enum COLUMN_TYPE {
 export interface optionI {
   option_name: string;
   option_value: string;
+  option_key?: number;
   option_sort: string;
 }
 
