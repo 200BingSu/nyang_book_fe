@@ -19,7 +19,7 @@ const SearchBar = () => {
 
   const searchBarStyle = (isSearching: boolean): string => {
     const baseStyle = ` w-full
-      px-4 py-3 
+      px-4 py-2 
       
       flex items-center justify-between 
       text-base bg-white 

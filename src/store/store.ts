@@ -5,15 +5,15 @@
 
 import { configureStore } from "@reduxjs/toolkit";
 // 카운터용 reducer을 활용
-import counterReducer from "../features/counter/counterSlice";
 import serviceReducer from "../features/serviceSlice";
+import messageReducer from "../features/messageSlice";
 
 // 파일명은 주로 store.js
 const store = configureStore({
   reducer: {
     // store을 쪼개서, 즉 slice해서 사용합니다.
-    counter: counterReducer,
     service: serviceReducer,
+    message: messageReducer,
   },
 });
 

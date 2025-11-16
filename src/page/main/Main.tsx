@@ -1,9 +1,6 @@
 import { useRef } from "react";
-import CustomTable from "../../components/main/CustomTable";
 import DashBoardItem from "../../components/main/DashBoardItem";
-import type { DiaryVO } from "../../types/DiaryVO";
 import { COLUMN_TYPE } from "../../types/SearchInterface";
-import { updateData } from "../../api/CommonApi";
 
 const Main = () => {
   const openKeyRef = useRef("");
@@ -17,10 +14,10 @@ const Main = () => {
           {/* <DashBoardItem title="고양이의 미슐랭" addBtn={false} /> */}
           <DashBoardItem
             title="묘생일지"
+            url="/diary"
             data="diary"
             subTitle="diary"
             addBtn={true}
-            onClickAddBtn={() => {}}
             isSelectBox={true}
             openKeyRef={openKeyRef}
             optionList={[
@@ -40,13 +37,13 @@ const Main = () => {
               {
                 column_name: "내용",
                 column_value: "diary_content",
-                column_width: 65,
+                column_width: 70,
                 column_align: "start",
               },
               {
                 column_name: "작성일",
                 column_value: "fm_created_at",
-                column_width: 25,
+                column_width: 20,
               },
             ]}
             detailColumnList={[
@@ -57,11 +54,78 @@ const Main = () => {
                 column_type: COLUMN_TYPE.TEXTAREA,
               },
             ]}
-            children={<CustomTable />}
+            type="custom_table"
           />
         </div>
       </div>
-      <div className="flex-1 ">왼쪽</div>
+      <div className="flex-1 ">
+        <DashBoardItem
+          title="구매목록"
+          url="/purchases"
+          data="purchases"
+          subTitle="purchases"
+          addBtn={true}
+          isSelectBox={true}
+          openKeyRef={openKeyRef}
+          type="custom_table"
+          optionList={[
+            {
+              option_name: "최신순",
+              option_value: "created_at",
+              option_sort: "DESC",
+            },
+            {
+              option_name: "작성일순",
+              option_value: "created_at",
+              option_sort: "ASC",
+            },
+          ]}
+          columnList={[
+            { column_name: "#", column_value: "index", column_width: 10 },
+            {
+              column_name: "브랜드",
+              column_value: "brand_name",
+            },
+            {
+              column_name: "제품명",
+              column_value: "product_name",
+            },
+            {
+              column_name: "선호",
+              column_value: "like_point",
+              column_type: COLUMN_TYPE.NUMBER,
+            },
+            {
+              column_name: "작성일",
+              column_value: "fm_created_at",
+            },
+          ]}
+          detailColumnList={[
+            {
+              column_name: "제품",
+              column_value: "product_name",
+              column_type: COLUMN_TYPE.SEARCH,
+              column_optionList: [
+                {
+                  value: "brand",
+                  label: "브랜드",
+                  children: [{ value: "1", label: "조공" }],
+                },
+                { value: "taste", label: "맛" },
+              ],
+            },
+            {
+              column_name: "선호",
+              column_value: "like_point",
+              column_type: COLUMN_TYPE.LIKEPOINT,
+            },
+            {
+              column_name: "작성일",
+              column_value: "fm_created_at",
+            },
+          ]}
+        />
+      </div>
     </div>
   );
 };

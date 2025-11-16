@@ -1,65 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { getSearchDataList } from "../../api/searchApi";
+import React from "react";
 import type { DiaryVO } from "../../types/DiaryVO";
 import type { CustomTableI } from "../../types/IComponent";
-import type { columnI } from "../../types/SearchInterface";
-import BasicModal from "../layout/modal/BasicModal";
-import DetailContents from "./DetailContents";
-
-export type DetailDataType = Partial<DiaryVO>;
 
 const CustomTable: React.FC<CustomTableI> = ({
   data,
   nowOption,
   columnList,
   detailColumnList,
+  dataList,
+  handleClickRow,
 }) => {
-  const [dataList, setDataList] = useState([]);
-  const [selectedItem, setSelectedItem] = useState({});
-  const [isOpenDetail, setIsOpenDetail] = useState(false);
-  const [detailData, setDetailData] = useState<DetailDataType>({});
-
-  const fetchDataList = async (key: number | undefined | null) => {
-    console.log("fetchDataList");
-
-    const dataArr = await getSearchDataList(
-      data,
-      nowOption?.option_value,
-      nowOption?.option_sort,
-      key,
-    );
-    if (!key) {
-      setDataList(dataArr.dataMap.dataList);
-    } else {
-      setIsOpenDetail(true);
-      setDetailData(dataArr.dataMap.dataList[0]);
-    }
-  };
-
-  const handleClickRow = (item: any) => {
-    setSelectedItem(item);
-  };
-
-  useEffect(() => {
-    fetchDataList(null);
-  }, [data, nowOption]);
-
-  useEffect(() => {
-    if (Object.keys(selectedItem).length === 0) {
-      return;
-    }
-    type Key = `${string}_key`;
-
-    const key = `${data}_key` as Key;
-    const value = (selectedItem as Record<Key, any>)[key];
-
-    if (!value) return;
-
-    fetchDataList(value as number);
-  }, [selectedItem]);
-  useEffect(() => {}, [detailData, isOpenDetail]);
   return (
-    <div className="p-1">
+    <div className="p-1 h-full">
       <div className=" pr-4">
         <table className="w-full table-fixed">
           <thead>
@@ -86,7 +38,7 @@ const CustomTable: React.FC<CustomTableI> = ({
         </table>
       </div>
       <div
-        className="overflow-y-auto"
+        className="overflow-y-auto "
         style={{ maxHeight: "calc(100vh - 180px)" }}
       >
         <table className="w-full table-fixed">
@@ -96,7 +48,16 @@ const CustomTable: React.FC<CustomTableI> = ({
                 <tr
                   key={index}
                   className="hover:bg-orange-100 cursor-pointer"
-                  onClick={() => handleClickRow(item)}
+                  onClick={() => {
+                    if (
+                      handleClickRow &&
+                      typeof handleClickRow === "function"
+                    ) {
+                      console.log("???");
+
+                      handleClickRow(item);
+                    }
+                  }}
                 >
                   {columnList?.map((column, colIndex) => {
                     return column.column_value === "index" ? (
@@ -129,7 +90,7 @@ const CustomTable: React.FC<CustomTableI> = ({
                                 : "text-center "
                             }`}
                         >
-                          {item[column.column_value]}
+                          {(item as Record<string, any>)[column.column_value]}
                         </p>
                       </td>
                     );
@@ -140,26 +101,6 @@ const CustomTable: React.FC<CustomTableI> = ({
           </tbody>
         </table>
       </div>
-      {isOpenDetail && (
-        <BasicModal
-          handleClose={() => {
-            setIsOpenDetail(false);
-            setSelectedItem({});
-          }}
-          children={
-            <DetailContents
-              handleClose={() => {
-                setIsOpenDetail(false);
-                setSelectedItem({});
-              }}
-              data={data as string}
-              detailData={detailData}
-              detailColumnList={detailColumnList as columnI[]}
-              fetchDataList={fetchDataList}
-            />
-          }
-        />
-      )}
     </div>
   );
 };

@@ -1,33 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { updateData } from "../../api/CommonApi";
 import { getAuthInfo } from "../../page/login/loginApi";
 import type { COLUMN_TYPE, columnI } from "../../types/SearchInterface";
-import type { DetailDataType } from "./CustomTable";
-import { Button } from "antd";
+import type { DetailDataType } from "../../types/IComponent";
+import { Cascader } from "antd";
 
 interface DetailContentsI {
-  data: string;
-  detailData: DetailDataType;
+  form: DetailDataType;
+  setForm: React.Dispatch<React.SetStateAction<DetailDataType>>;
   detailColumnList: columnI[];
-  handleClose: () => void;
-  fetchDataList: (key: number | undefined | null) => void;
 }
 
 const DetailContents: React.FC<DetailContentsI> = ({
-  data,
-  detailData,
+  form,
+  setForm,
   detailColumnList,
-  handleClose,
-  fetchDataList,
 }) => {
   const userSession = async () => {
     const result = await getAuthInfo();
     return result;
   };
 
-  const [form, setForm] = useState<DetailDataType>({});
-
   const renderInput = (item: columnI, column_type: COLUMN_TYPE) => {
+    const onChange = (option: any) => {
+      console.log("option", option);
+    };
     switch (column_type) {
       case "TEXTAREA":
         return (
@@ -55,15 +51,14 @@ const DetailContents: React.FC<DetailContentsI> = ({
             }}
           />
         );
-    }
-  };
-
-  const handleSubmit = async () => {
-    console.log("upDAta");
-    const upData = await updateData(data, form);
-
-    if (upData) {
-      await fetchDataList(null);
+      case "SEARCH":
+        return (
+          <Cascader
+            options={item.column_optionList}
+            onChange={onChange}
+            placeholder="제품"
+          />
+        );
     }
   };
 
@@ -74,9 +69,9 @@ const DetailContents: React.FC<DetailContentsI> = ({
         case "TEXTAREA":
           acc[column.column_value as keyof DetailDataType] = "" as any;
           break;
-        // case "NUMBER":
-        //   acc[column.column_value as keyof DetailDataType] = 0;
-        //   break;
+        case "NUMBER":
+          acc[column.column_value as keyof DetailDataType] = 0 as any;
+          break;
         // case "CHECKBOX":
         //   acc[column.column_value as keyof DetailDataType] = false;
         //   break;
@@ -90,13 +85,11 @@ const DetailContents: React.FC<DetailContentsI> = ({
   };
 
   useEffect(() => {
-    setForm(detailData);
     const fetchSession = async () => {
       const { session, user } = await userSession();
       //   console.log("session:", session);
       //   console.log("user:", user);
     };
-
     fetchSession();
   }, []);
 
@@ -112,25 +105,6 @@ const DetailContents: React.FC<DetailContentsI> = ({
             </label>
           );
         })}
-      </div>
-      <div className="flex items-center gap-2 justify-end">
-        <Button
-          type="primary"
-          onClick={e => {
-            e.preventDefault();
-            handleSubmit();
-          }}
-        >
-          등록
-        </Button>
-        <Button
-          type="default"
-          onClick={() => {
-            handleClose();
-          }}
-        >
-          닫기
-        </Button>
       </div>
     </div>
   );

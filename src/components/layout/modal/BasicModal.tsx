@@ -1,11 +1,13 @@
 import React from "react";
 import type { ModalI } from "../../../types/IComponent";
 import { CgClose } from "react-icons/cg";
+import { Button } from "antd";
 
 const BasicModal: React.FC<ModalI> = ({
   handleClose = () => {},
   title = "상세보기",
   children,
+  buttonComponent,
 }) => {
   return (
     <div className="fixed inset-0 bg-black/50">
@@ -36,6 +38,13 @@ const BasicModal: React.FC<ModalI> = ({
           </button> */}
         </div>
         {children}
+        {/* 버튼 */}
+        <div className="flex items-center gap-2 justify-end">
+          {buttonComponent}
+          <Button type="default" onClick={handleClose}>
+            닫기
+          </Button>
+        </div>
       </div>
     </div>
   );
