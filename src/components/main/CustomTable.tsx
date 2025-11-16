@@ -20,6 +20,8 @@ const CustomTable: React.FC<CustomTableI> = ({
   const [detailData, setDetailData] = useState<DetailDataType>({});
 
   const fetchDataList = async (key: number | undefined | null) => {
+    console.log("fetchDataList");
+
     const dataArr = await getSearchDataList(
       data,
       nowOption?.option_value,
@@ -55,10 +57,7 @@ const CustomTable: React.FC<CustomTableI> = ({
 
     fetchDataList(value as number);
   }, [selectedItem]);
-  useEffect(() => {
-    console.log("selectedItem", selectedItem);
-    console.log("isOpenDetail", isOpenDetail);
-  }, [detailData, isOpenDetail]);
+  useEffect(() => {}, [detailData, isOpenDetail]);
   return (
     <div className="p-1">
       <div className=" pr-4">
@@ -122,7 +121,14 @@ const CustomTable: React.FC<CustomTableI> = ({
                             : undefined,
                         }}
                       >
-                        <p className="text-center truncate p-2 text-stone-700 font-medium text-sm">
+                        <p
+                          className={`truncate p-2 text-stone-700 font-medium text-sm 
+                            ${
+                              column.column_align
+                                ? `text-${column.column_align}`
+                                : "text-center "
+                            }`}
+                        >
                           {item[column.column_value]}
                         </p>
                       </td>
@@ -149,6 +155,7 @@ const CustomTable: React.FC<CustomTableI> = ({
               data={data as string}
               detailData={detailData}
               detailColumnList={detailColumnList as columnI[]}
+              fetchDataList={fetchDataList}
             />
           }
         />

@@ -19,10 +19,13 @@ const BasicModal: React.FC<ModalI> = ({
       ></div>
 
       {/* 모달 내용 */}
-      <div className="relative z-10 bg-white p-4 rounded-md max-w-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+      <div
+        className="relative z-10 bg-white p-4 rounded-md max-w-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+      flex flex-col gap-3"
+      >
         <div className="flex items-center justify-between">
           <h4 className="text-stone-400">{title}</h4>
-          <button
+          {/* <button
             type="button"
             onClick={e => {
               e.stopPropagation();
@@ -30,7 +33,7 @@ const BasicModal: React.FC<ModalI> = ({
             }}
           >
             <CgClose />
-          </button>
+          </button> */}
         </div>
         {children}
       </div>

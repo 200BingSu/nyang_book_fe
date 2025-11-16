@@ -14,4 +14,5 @@ export interface columnI {
   column_value: string;
   column_width?: number;
   column_type?: COLUMN_TYPE;
+  column_align?: string;
 }

@@ -3,12 +3,14 @@ import { updateData } from "../../api/CommonApi";
 import { getAuthInfo } from "../../page/login/loginApi";
 import type { COLUMN_TYPE, columnI } from "../../types/SearchInterface";
 import type { DetailDataType } from "./CustomTable";
+import { Button } from "antd";
 
 interface DetailContentsI {
   data: string;
   detailData: DetailDataType;
   detailColumnList: columnI[];
   handleClose: () => void;
+  fetchDataList: (key: number | undefined | null) => void;
 }
 
 const DetailContents: React.FC<DetailContentsI> = ({
@@ -16,6 +18,7 @@ const DetailContents: React.FC<DetailContentsI> = ({
   detailData,
   detailColumnList,
   handleClose,
+  fetchDataList,
 }) => {
   const userSession = async () => {
     const result = await getAuthInfo();
@@ -55,6 +58,15 @@ const DetailContents: React.FC<DetailContentsI> = ({
     }
   };
 
+  const handleSubmit = async () => {
+    console.log("upDAta");
+    const upData = await updateData(data, form);
+
+    if (upData) {
+      await fetchDataList(null);
+    }
+  };
+
   const handleReset = () => {
     const resetForm = detailColumnList.reduce((acc, column) => {
       switch (column.column_type) {
@@ -89,7 +101,7 @@ const DetailContents: React.FC<DetailContentsI> = ({
   }, []);
 
   return (
-    <div>
+    <div className="flex flex-col gap-2">
       {/* form */}
       <div>
         {detailColumnList.map((item, index) => {
@@ -101,37 +113,24 @@ const DetailContents: React.FC<DetailContentsI> = ({
           );
         })}
       </div>
-      <div>
-        <button
-          type="button"
+      <div className="flex items-center gap-2 justify-end">
+        <Button
+          type="primary"
           onClick={e => {
             e.preventDefault();
-            updateData(data, form);
+            handleSubmit();
           }}
-          className="px-2 py-1 bg-orange-400 text-slate-50 rounded-md hover:bg-orange-500 transition-all duration-200"
         >
           등록
-        </button>
-        <button
-          type="button"
-          onClick={e => {
-            e.preventDefault();
-            handleReset();
-          }}
-          className="px-2 py-1 bg-orange-400 text-slate-50 rounded-md hover:bg-orange-500 transition-all duration-200"
-        >
-          초기화
-        </button>
-        <button
-          type="button"
-          onClick={e => {
-            e.preventDefault();
+        </Button>
+        <Button
+          type="default"
+          onClick={() => {
             handleClose();
           }}
-          className="px-2 py-1 bg-orange-400 text-slate-50 rounded-md hover:bg-orange-500 transition-all duration-200"
         >
           닫기
-        </button>
+        </Button>
       </div>
     </div>
   );
