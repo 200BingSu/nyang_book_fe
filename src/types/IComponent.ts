@@ -7,10 +7,7 @@ export interface PropsI {
 }
 
 export interface CustomTableI {
-  data?: string;
-  nowOption?: optionI;
   columnList?: columnI[];
-  detailColumnList?: columnI[];
   dataList: object[];
   handleClickRow?: (row: any) => void;
 }

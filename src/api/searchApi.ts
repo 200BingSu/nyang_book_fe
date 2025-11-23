@@ -2,9 +2,9 @@ import axios from "axios";
 import { baseUrl } from "../constants/url";
 import type { ServiceVO } from "../types/ServiceVO";
 
-interface SearchVO<T> {
-  serviceVOList: ServiceVO[];
-  dataList: Array<T>;
+interface OrderByI {
+  orderBy: string;
+  sortOrder: string;
 }
 
 const mapping = "search";
@@ -31,20 +31,16 @@ export const getSearchWithQuery = async (text: string) => {
 
 export const getSearchDataList = async (
   query: string | null | undefined,
-  orderBy: string | null | undefined,
-  sortOrder: string | null | undefined,
+  orderBy: OrderByI[],
   key: number | null | undefined,
 ) => {
-  const payload = new URLSearchParams({
+  const payload = {
     query: query ?? "",
-    orderBy: orderBy ?? "",
-    sortOrder: sortOrder ?? "",
+    orderBy: orderBy,
     key: key ? key.toString() : "",
-  });
+  };
   try {
-    const res = await axios.get(
-      `${baseUrl}/${mapping}/dataList?${payload.toString()}`,
-    );
+    const res = await axios.post(`${baseUrl}/${mapping}/dataList`, payload);
 
     const data = await res.data;
     if (data.message === "OK") {

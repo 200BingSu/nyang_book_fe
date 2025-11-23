@@ -16,6 +16,8 @@ export const insertData = async (data: string, payload: any) => {
 };
 
 export const updateData = async (data: string, payload: any) => {
+  console.log("updateData", data);
+
   try {
     const res = await axios.put(`${baseUrl}/${data}/update`, payload);
     const resData = await res.data;

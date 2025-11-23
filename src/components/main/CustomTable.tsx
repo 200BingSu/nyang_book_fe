@@ -1,12 +1,8 @@
 import React from "react";
-import type { DiaryVO } from "../../types/DiaryVO";
 import type { CustomTableI } from "../../types/IComponent";
 
 const CustomTable: React.FC<CustomTableI> = ({
-  data,
-  nowOption,
   columnList,
-  detailColumnList,
   dataList,
   handleClickRow,
 }) => {

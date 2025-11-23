@@ -1,4 +1,4 @@
-import { Button, Popconfirm } from "antd";
+import { Button, Empty, Popconfirm } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { BiPlus } from "react-icons/bi";
 import { PiCaretDownBold } from "react-icons/pi";
@@ -6,10 +6,9 @@ import { useDispatch } from "react-redux";
 import { deleteData, insertData, updateData } from "../../api/CommonApi";
 import { getSearchDataList } from "../../api/searchApi";
 import { setError, setSuccess } from "../../features/messageSlice";
-import type { PropsI } from "../../types/IComponent";
+import type { DetailDataType, PropsI } from "../../types/IComponent";
 import type { columnI, optionI } from "../../types/SearchInterface";
 import BasicModal from "../layout/modal/BasicModal";
-import type { DetailDataType } from "./CustomTable";
 import CustomTable from "./CustomTable";
 import DetailContents from "./DetailContents";
 import { useNavigate } from "react-router-dom";
@@ -81,15 +80,28 @@ const DashBoardItem: React.FC<DashBoardItemProps> = ({
 
   // children
   const renderTypeComponent = (type: string) => {
+    if (dataList.length === 0) {
+      return (
+        <Empty
+          image={Empty.PRESENTED_IMAGE_SIMPLE}
+          styles={{ image: { height: 60 } }}
+          description={`등록된 ${title}이 없습니다.`}
+        >
+          <Button
+            type="primary"
+            onClick={() => setIsOpenDataModal({ type: "insert", isOpen: true })}
+          >
+            {title ?? ""} 등록하기
+          </Button>
+        </Empty>
+      );
+    }
     switch (type) {
       case "custom_table":
         return (
           <CustomTable
-            data={data}
             dataList={dataList}
-            nowOption={nowOption}
             columnList={columnList}
-            detailColumnList={detailColumnList}
             handleClickRow={handleClickRow}
           />
         );
@@ -99,8 +111,12 @@ const DashBoardItem: React.FC<DashBoardItemProps> = ({
   const fetchDataList = async (key: number | undefined | null) => {
     const dataArr = await getSearchDataList(
       data,
-      nowOption?.option_value,
-      nowOption?.option_sort,
+      columnList.map(item => {
+        return {
+          orderBy: item.column_value,
+          sortOrder: item.column_sort ?? "ASC",
+        };
+      }),
       key,
     );
     if (!key) {
@@ -112,6 +128,8 @@ const DashBoardItem: React.FC<DashBoardItemProps> = ({
   };
 
   const handleSubmit = async (type: string, form: any) => {
+    console.log("type", type);
+
     if (type === "insert") {
       const resData = await insertData(data, form);
       if (resData) {
@@ -123,7 +141,7 @@ const DashBoardItem: React.FC<DashBoardItemProps> = ({
         dispatch(setError("실패했습니다."));
       }
     }
-    if (type === "update") {
+    if (type === "detail") {
       const upData = await updateData(data, form);
       if (upData) {
         await fetchDataList(null);
@@ -292,7 +310,7 @@ const DashBoardItem: React.FC<DashBoardItemProps> = ({
         </div>
       </div>
       {/* body */}
-      <div className="border border-stone-200 bg-white rounded-lg h-full">
+      <div className="border border-stone-200 bg-white rounded-lg h-full flex items-center justify-center">
         {renderTypeComponent(type)}
       </div>
 
@@ -314,7 +332,7 @@ const DashBoardItem: React.FC<DashBoardItemProps> = ({
             <>
               <Button
                 type="primary"
-                onClick={() => handleSubmit("update", form)}
+                onClick={() => handleSubmit(isOpenDataModal.type, form)}
               >
                 등록
               </Button>

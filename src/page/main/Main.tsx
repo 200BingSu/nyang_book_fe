@@ -1,9 +1,12 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import DashBoardItem from "../../components/main/DashBoardItem";
 import { COLUMN_TYPE } from "../../types/SearchInterface";
+import { initDiaryColumnList } from "../../constants/initData";
 
 const Main = () => {
   const openKeyRef = useRef("");
+
+  const [diaryColumnList, setDiaryColumnList] = useState(initDiaryColumnList);
 
   return (
     <div className="flex items-start gap-4 h-full ">
@@ -13,6 +16,7 @@ const Main = () => {
         <div className="flex gap-4 h-full">
           {/* <DashBoardItem title="고양이의 미슐랭" addBtn={false} /> */}
           <DashBoardItem
+            type="custom_table"
             title="묘생일지"
             url="/diary"
             data="diary"
@@ -32,29 +36,16 @@ const Main = () => {
                 option_sort: "ASC",
               },
             ]}
-            columnList={[
-              { column_name: "#", column_value: "index", column_width: 10 },
+            columnList={diaryColumnList}
+            detailColumnList={[
               {
                 column_name: "내용",
                 column_value: "diary_content",
                 column_width: 70,
                 column_align: "start",
-              },
-              {
-                column_name: "작성일",
-                column_value: "fm_created_at",
-                column_width: 20,
-              },
-            ]}
-            detailColumnList={[
-              {
-                column_name: "",
-                column_value: "diary_content",
-                column_width: 65,
                 column_type: COLUMN_TYPE.TEXTAREA,
               },
             ]}
-            type="custom_table"
           />
         </div>
       </div>
@@ -97,22 +88,14 @@ const Main = () => {
             },
             {
               column_name: "작성일",
-              column_value: "fm_created_at",
+              column_value: "created_at",
             },
           ]}
           detailColumnList={[
             {
               column_name: "제품",
-              column_value: "product_name",
+              column_value: "product_key",
               column_type: COLUMN_TYPE.SEARCH,
-              column_optionList: [
-                {
-                  value: "brand",
-                  label: "브랜드",
-                  children: [{ value: "1", label: "조공" }],
-                },
-                { value: "taste", label: "맛" },
-              ],
             },
             {
               column_name: "선호",
@@ -121,7 +104,8 @@ const Main = () => {
             },
             {
               column_name: "작성일",
-              column_value: "fm_created_at",
+              column_value: "created_at",
+              column_type: COLUMN_TYPE.DATETIME,
             },
           ]}
         />
