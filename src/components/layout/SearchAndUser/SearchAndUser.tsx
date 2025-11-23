@@ -4,7 +4,7 @@ import UserInfo from "./UserInfo";
 
 const SearchAndUser = () => {
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-start justify-between">
       <SearchBar />
       <UserInfo />
     </div>

@@ -1,0 +1,1 @@
+const mapping = "diary";

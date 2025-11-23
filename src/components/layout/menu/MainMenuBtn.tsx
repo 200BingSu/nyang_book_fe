@@ -35,9 +35,16 @@ const MainMenuBtn: React.FC<MainMenuBtnProps> = ({
       {/* MAIN */}
       <button
         type="button"
+        title={service.service_name}
         className={`p-3 w-full flex items-center  ${
           mainMenu === service.service_en
-            ? "text-orange-600 bg-orange-100"
+            ? `text-orange-600 ${
+                service.childService.length > 0
+                  ? service.service_type === "home"
+                    ? "bg-orange-100"
+                    : "bg-orange-50 bg-opacity-70"
+                  : "bg-orange-100"
+              }`
             : "text-orange-500 hover:bg-orange-50"
         } ${isOpenSideBar ? "justify-between" : "justify-center"}`}
         onClick={() => {
@@ -98,24 +105,28 @@ const MainMenuBtn: React.FC<MainMenuBtnProps> = ({
             >
               <button
                 type="button"
+                title={childService.service_name}
                 onClick={() => {
                   navigate(`/${service.service_en}/${childService.service_en}`);
                 }}
-                className={`flex items-center gap-2 pl-8 py-2  w-full
+                className={`flex items-center gap-2  py-2  w-full 
                   ${
                     subMenu === childService.service_en
-                      ? "bg-yellow-100"
-                      : "hover:bg-yellow-50"
-                  }`}
+                      ? "bg-orange-100"
+                      : "hover:bg-orange-50"
+                  }
+                  ${isOpenSideBar ? "pl-8" : "justify-center"}`}
               >
                 <i>
                   {SubIcon && (
                     <SubIcon className="text-orange-500 text-base w-5 h-5" />
                   )}
                 </i>
-                <p className="font-semibold text-orange-500 text-base">
-                  {childService.service_name}
-                </p>
+                {isOpenSideBar && (
+                  <p className="font-semibold text-orange-500 text-base">
+                    {childService.service_name}
+                  </p>
+                )}
               </button>
             </div>
           );

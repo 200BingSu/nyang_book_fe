@@ -1,14 +1,11 @@
 import { useEffect, useState } from "react";
-import { PiCat, PiPawPrintFill, PiSidebarSimple } from "react-icons/pi";
-import { selectUserInfo } from "../../../api/userApi";
-import { selectAllServiceWithUserType } from "../../../api/serviceApi";
+import { PiPawPrintFill, PiSidebarSimple } from "react-icons/pi";
 import { useDispatch, useSelector } from "react-redux";
-import type { RootState } from "../../../store/store";
-import { setList } from "../../../features/serviceSlice";
-import { BiHome } from "react-icons/bi";
-import { FaChevronCircleRight, FaChevronRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { useDebugState } from "../../../util/useConsoleState";
+import { selectAllServiceWithUserType } from "../../../api/serviceApi";
+import { selectUserInfo } from "../../../api/userApi";
+import { setList } from "../../../features/serviceSlice";
+import type { RootState } from "../../../store/store";
 import MainMenuBtn from "./MainMenuBtn";
 
 const SideBar = () => {
@@ -52,7 +49,7 @@ const SideBar = () => {
       "inline-block overflow-hidden whitespace-nowrap transition-transform duration-300";
     return isOpen
       ? `${base} max-w-max opacity-100 `
-      : `${base} max-w-0 opacity-0 `;
+      : `${base} max-w-0 opacity-0`;
   };
 
   return (
@@ -60,7 +57,8 @@ const SideBar = () => {
       className={`
         relative bg-white rounded-lg px-2 py-8 flex flex-col items-center gap-8 border border-stone-200
         transition-all  duration-300 ease-in-out
-        h-full overflow-y-auto
+        h-full overflow-y-auto 
+        ${isOpenSideBar ? "min-w-fit" : "w-[70px]"}
       `}
     >
       {/* 토글 버튼 */}
